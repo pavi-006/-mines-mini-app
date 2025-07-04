@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mines Predictor</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #111;
+      color: #f0f0f0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #00ffcc;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+    }
+    input {
+      background: #222;
+      color: white;
+    }
+    button {
+      background: #00cc99;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #009977;
+    }
+    #result {
+      white-space: pre-wrap;
+      margin-top: 20px;
+      background: #1e1e1e;
+      padding: 15px;
+      border-radius: 8px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>💣 Mines Predictor</h1>
+
+  <label>Server Seed</label>
+  <input type="text" id="server_seed" placeholder="Enter server seed" />
+
+  <label>Client Seed</label>
+  <input type="text" id="client_seed" placeholder="Enter client seed" />
+
+  <label>Nonce</label>
+  <input type="number" id="nonce" placeholder="e.g. 10" />
+
+  <label>Mines Count</label>
+  <input type="number" id="mines" placeholder="e.g. 3" />
+
+  <button onclick="predict()">🎯 Predict</button>
+
+  <div id="result"></div>
+
+  <script>
+    async function predict() {
+      const server = document.getElementById('server_seed').value;
+      const client = document.getElementById('client_seed').value;
+      const nonce = document.getElementById('nonce').value;
+      const mines = document.getElementById('mines').value;
+
+      const command = `/predict ${server} ${client} ${nonce} ${mines}`;
+      document.getElementById('result').innerText = "📤 Sending command...\n" + command;
+
+      if (window.Telegram && Telegram.WebApp) {
+        Telegram.WebApp.sendData(command); // Sends message back to your bot
+        Telegram.WebApp.close(); // Optional: close web app after sending
+      } else {
+        alert("❌ Telegram WebApp not detected.");
+      }
+    }
+  </script>
+</body>
+</html>
